@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+      <link rel="stylesheet" href="styles/bootstrap.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="hero-unit">
+
+
+        <table>
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Description</th>
+              <th>
+                <a href="">
+                  <i class="icon-plus-sign"></i>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <a href="" target="_blank"></a>
+              </td>
+              <td></td>
+              <td>
+                <a href=""><i class="icon-pencil"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <form name="myForm">
+          <div class="control-group">
+            <label>Name</label>
+            <input type="text" name="name">
+          </div>
+
+          <div class="control-group">
+            <label>Website</label>
+            <input type="url" name="site">
+          </div>
+
+          <label>Description</label>
+          <textarea name="description"></textarea>
+
+          <br>
+          <a href="#/" class="btn">Cancel</a>
+          <button class="btn btn-primary">Save</button>
+          <button class="btn btn-danger">Delete</button>
+        </form>
+
+
+      </div>
+    </div>
+
+    <!-- build:js scripts/main.js -->
+    <script src="components/jquery/jquery.js"></script>
+    <script src='scripts/angular.min.js'></script>
+    <script src='scripts/firebase.js'></script>
+    <script src='scripts/angularFire.js'></script>
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>
