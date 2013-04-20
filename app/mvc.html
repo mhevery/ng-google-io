@@ -1,0 +1,19 @@
+<html ng-app>
+  <body ng-controller='UserCtrl as uCtrl'>
+    Hi <input ng-model="uCtrl.user.first">
+    <button ng-click="uCtrl.bye()" style="height: 21px">bye</button>
+
+    <script src="components/angular/angular.js"></script>
+    <script>
+      function UserCtrl() {
+        this.user = {
+          first:'Larry',
+          last:'Page'
+        };
+        this.bye = function() {
+          alert('bye: ' + this.user.first);
+        };
+      }
+    </script>
+  </body>
+</html>
