@@ -1,57 +1,27 @@
 'use strict';
 
+function MainController($scope) {
+  $scope.view = 'list';
+}
+
 function noop(){}
 
-var $container = $('.hero-unit');
-
-var $projectsTABLE = $container.find('table').remove();
-var $projectsTBODY = $projectsTABLE.find('tbody');
-var $projectTemplateTR = $projectsTBODY.find('>tr').remove();
-var $projectAdd = $container.find('thead>tr>td>a');
-
-var $detail = $container.find('form').remove();
-var $projectName = $detail.find(':input[name=name]');
-var $projectSite = $detail.find(':input[name=site]');
-var $projectDescription = $detail.find(':input[name=description]');
-var $detailCancel = $detail.find('a.btn');
-var $detailSave = $detail.find('.btn.btn-primary');
-var $detailDelete = $detail.find('.btn.btn-danger');
-var removeCurrentView = noop;
+var releaseListeners = noop;
 
 
-function ProjectListController() {
-  this.addProject = function (project) {
-    var row = $projectTemplateTR.clone();
-    row.find('>td:nth-child(1)>a').
-        text(project.name).
-        attr('href', project.url);
-    row.find('>td:nth-child(2)').text(project.description);
-    row.find('>td:nth-child(3)>a').
-        attr('href', project.id).
-        find('i').
-        click(function(e) {
-          e.preventDefault();
-          detailController.show($(this).parent().attr('href'));
-        });
-    $projectsTBODY.append(row);
+function ProjectListController($scope) {
+  $scope.projects = [];
+
+  firebase.on('child_added', onChildAdded);
+  releaseListeners = function() {
+    firebase.off('child_added', onChildAdded);
   };
-
-  this.show = function () {
-    var self = this;
-    removeCurrentView();
-    $container.append($projectsTABLE);
-    $projectsTBODY.find('>tr').remove();
-    firebase.on('child_added', onChildAdded);
-    removeCurrentView = function() {
-      firebase.off('child_added', onChildAdded);
-      $projectsTABLE.remove();
-    };
-    function onChildAdded(snapshot) {
-      var project = snapshot.val();
-      project.id = snapshot.name();
-      self.addProject(project);
-    }
-  };
+  function onChildAdded(snapshot) {
+    var project = snapshot.val();
+    project.id = snapshot.name();
+    $scope.projects.push(project);
+    $scope.$apply();
+  }
 }
 
 
@@ -70,7 +40,7 @@ function ProjectDetailController() {
 
   this.show = function(id) {
     var self = this;
-    removeCurrentView();
+    releaseListeners();
     $detailCancel.click(function() {
       listController.show();
     });
@@ -80,7 +50,7 @@ function ProjectDetailController() {
     });
     var projectFB = firebase.child(id);
     projectFB.on('value', onValue);
-    removeCurrentView = function() {
+    releaseListeners = function() {
       firebase.off('value', onValue);
       $detail.remove();
     };
@@ -102,11 +72,6 @@ var firebase
 
 function main() {
   firebase = new Firebase('https://ng-projects.firebaseio.com/');
-
-  listController = new ProjectListController();
-  detailController = new ProjectDetailController();
-
-  listController.show();
 }
 
 

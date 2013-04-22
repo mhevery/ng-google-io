@@ -1,14 +1,16 @@
 <!doctype html>
-<html>
+<html ng-app>
   <head>
       <link rel="stylesheet" href="styles/bootstrap.css">
   </head>
-  <body>
+  <body ng-controller="MainController">
     <div class="container">
-      <div class="hero-unit">
+      <div class="hero-unit"
+           ng-switch="view">
 
 
-        <table>
+        <table ng-switch-when="list"
+               ng-controller="ProjectListController">
           <thead>
             <tr>
               <th>Project</th>
@@ -21,11 +23,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr ng-repeat="project in projects">
               <td>
-                <a href="" target="_blank"></a>
+                <a href="{{project.url}}" target="_blank">{{project.name}}</a>
               </td>
-              <td></td>
+              <td>{{project.description}}</td>
               <td>
                 <a href=""><i class="icon-pencil"></i></a>
               </td>
@@ -34,7 +36,7 @@
         </table>
 
 
-        <form name="myForm">
+        <form name="myForm" ng-switch-when="detail">
           <div class="control-group">
             <label>Name</label>
             <input type="text" name="name">
