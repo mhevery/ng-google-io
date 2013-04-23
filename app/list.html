@@ -1,0 +1,24 @@
+<table>
+  <thead>
+  <tr>
+    <th>Project</th>
+    <th>Description</th>
+    <th>
+      <a href="">
+        <i class="icon-plus-sign"></i>
+      </a>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="(id, project) in projects">
+    <td>
+      <a href="{{project.url}}" target="_blank">{{project.name}}</a>
+    </td>
+    <td>{{project.description}}</td>
+    <td>
+      <a href="#/project/{{id}}"><i class="icon-pencil"></i></a>
+    </td>
+  </tr>
+  </tbody>
+</table>

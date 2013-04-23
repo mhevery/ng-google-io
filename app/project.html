@@ -1,0 +1,19 @@
+<form name="myForm">
+  <div class="control-group">
+    <label>Name</label>
+    <input type="text" name="name" ng-model="project.name">
+  </div>
+
+  <div class="control-group">
+    <label>Website</label>
+    <input type="url" name="site" ng-model="project.url">
+  </div>
+
+  <label>Description</label>
+  <textarea name="description" ng-model="project.description"></textarea>
+
+  <br>
+  <a href="#/" ng-click="showList()" class="btn">Cancel</a>
+  <button ng-click="saveDetail()" class="btn btn-primary">Save</button>
+  <button class="btn btn-danger">Delete</button>
+</form>

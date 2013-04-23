@@ -1,64 +1,11 @@
 <!doctype html>
-<html ng-app>
+<html ng-app='projectApp'>
   <head>
       <link rel="stylesheet" href="styles/bootstrap.css">
   </head>
-  <body ng-controller="MainController">
+  <body>
     <div class="container">
-      <div class="hero-unit"
-           ng-switch="view">
-
-
-        <table ng-switch-when="list"
-               ng-controller="ProjectListController">
-          <thead>
-            <tr>
-              <th>Project</th>
-              <th>Description</th>
-              <th>
-                <a href="">
-                  <i class="icon-plus-sign"></i>
-                </a>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="project in projects">
-              <td>
-                <a href="{{project.url}}" target="_blank">{{project.name}}</a>
-              </td>
-              <td>{{project.description}}</td>
-              <td>
-                <a href="" ng-click="showDetail(project.id)"><i class="icon-pencil"></i></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-
-        <form name="myForm"
-              ng-switch-when="detail"
-              ng-controller="ProjectDetailController">
-          <div class="control-group">
-            <label>Name</label>
-            <input type="text" name="name" ng-model="project.name">
-          </div>
-
-          <div class="control-group">
-            <label>Website</label>
-            <input type="url" name="site" ng-model="project.url">
-          </div>
-
-          <label>Description</label>
-          <textarea name="description" ng-model="project.description"></textarea>
-
-          <br>
-          <a href="#/" ng-click="showList()" class="btn">Cancel</a>
-          <button ng-click="saveDetail()" class="btn btn-primary">Save</button>
-          <button class="btn btn-danger">Delete</button>
-        </form>
-
-
+      <div class="hero-unit" ng-view>
       </div>
     </div>
 

@@ -1,68 +1,23 @@
 'use strict';
 
-function MainController($scope) {
-  $scope.view = 'list';
+var projectApp = angular.module('projectApp', ['firebase']);
 
-  $scope.showDetail = function(id) {
-    $scope.view = 'detail';
-    $scope.detailId = id;
-    releaseListeners();
-  }
-  
-  $scope.showList = function() {
-    $scope.view = 'list';
-    $scope.detailId = null;
-    releaseListeners();
-  }
-}
+projectApp.config(function($routeProvider){
+  $routeProvider.
+      when('/', {templateUrl: 'list.html', controller: ProjectListController}).
+      when('/project/:id', {templateUrl: 'project.html', controller: ProjectDetailController}).
+      otherwise('/');
+});
 
-function noop(){}
-
-var releaseListeners = noop;
+projectApp.factory('projects', function() {});
+projectApp.value('fbUrl', 'https://ng-projects.firebaseio.com/');
 
 
-function ProjectListController($scope) {
-  $scope.projects = [];
-
-  firebase.on('child_added', onChildAdded);
-  releaseListeners = function() {
-    firebase.off('child_added', onChildAdded);
-  };
-  function onChildAdded(snapshot) {
-    var project = snapshot.val();
-    project.id = snapshot.name();
-    $scope.projects.push(project);
-    $scope.$apply();
-  }
+function ProjectListController($scope, angularFire, fbUrl) {
+  angularFire(fbUrl, $scope, 'projects', {});
 }
 
 
-function ProjectDetailController($scope) {
-
-  var projectFB = firebase.child($scope.detailId);
-  projectFB.on('value', onValue);
-  releaseListeners = function() {
-    firebase.off('value', onValue);
-  };
-  function onValue(snapshot) {
-    $scope.project = snapshot.val();
-    $scope.project.id = snapshot.name();
-    $scope.$apply();
-  }
-
-  this.saveDetail = function() {
-    var projectFB = firebase.child($scope.detailId);
-    projectFB.set($scope.project);
-    $scope.showList();
-  };
+function ProjectDetailController($scope, $routeParams, angularFire, fbUrl) {
+  angularFire(fbUrl + $routeParams.id, $scope, 'project', {});
 }
-
-
-var firebase;
-
-function main() {
-  firebase = new Firebase('https://ng-projects.firebaseio.com/');
-}
-
-
-main();
