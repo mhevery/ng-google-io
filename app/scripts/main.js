@@ -6,12 +6,34 @@ projectsApp.config(function($routeProvider) {
   $routeProvider.
       when('/', {
         controller: 'ProjectListCtrl as list',
-        templateUrl: 'ProjectList.html'
+        templateUrl: 'ProjectList.html',
+        depth: 0
       }).
       when('/project/:id', {
         controller: 'ProjectDetailCtrl as detail',
-        templateUrl: 'ProjectDetail.html'
+        templateUrl: 'ProjectDetail.html',
+        depth: 1
       });
+});
+
+projectsApp.run(function ($rootScope) {
+  $rootScope.viewSlideAnimation = 'slide-left'; //always start the page from the left
+
+  $rootScope.$on('$routeChangeStart', function(e, current, previous) {
+    $rootScope.viewSlideAnimation = solveDirection(current, previous) || $rootScope.viewSlideAnimation;
+  });
+
+  $rootScope.$on('$routeChangeSuccess', function(e, current, previous) {
+    $rootScope.viewSlideAnimation = solveDirection(current, previous, true) || $rootScope.viewSlideAnimation;
+  });
+
+  function solveDirection(current, previous, reverse) {
+    if(previous && current) {
+      return reverse ?
+        (current.depth < previous.depth ? 'slide-left' : 'slide-right') :
+        (current.depth < previous.depth ? 'slide-right' : 'slide-left');
+    }
+  };
 });
 
 projectsApp.factory('Project', function($resource) {
