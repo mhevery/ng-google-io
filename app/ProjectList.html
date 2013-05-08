@@ -1,4 +1,5 @@
 <div>
+  <input ng-model="search">
   <table>
     <thead>
     <tr>
@@ -12,7 +13,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="project in list.projects">
+    <tr ng-repeat="project in list.projects | filter:search"
+        ng-animate=" 'slide' ">
       <td>
         <a href="{{project.url}}" target="_blank">{{project.name}}</a>
       </td>

@@ -6,12 +6,25 @@ projectsApp.config(function($routeProvider) {
   $routeProvider.
       when('/', {
         controller: 'ProjectListCtrl as list',
-        templateUrl: 'ProjectList.html'
+        templateUrl: 'ProjectList.html',
+        depth: 0
       }).
       when('/project/:id', {
         controller: 'ProjectDetailCtrl as detail',
-        templateUrl: 'ProjectDetail.html'
+        templateUrl: 'ProjectDetail.html',
+        depth: 1
       });
+});
+
+projectsApp.run(function ($rootScope) {
+  $rootScope.$on('$routeChangeSuccess', function(e, current, previous) {
+    var direction = current && previous && current.depth < previous.depth;
+
+    $rootScope.viewSlideAnimation = {
+      enter: direction ? 'slide-left-enter' : 'slide-right-enter',
+      leave: direction ? 'slide-right-leave' : 'slide-left-leave'
+    }
+  });
 });
 
 projectsApp.factory('Project', function($resource) {

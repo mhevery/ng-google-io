@@ -1,12 +1,21 @@
 <form name="myForm">
   <div class="control-group">
     <label>Name</label>
-    <input type="text" name="name" ng-model="detail.project.name">
+    <input type="text" name="name" ng-model="detail.project.name" required>
+    <span ng-show="myForm.name.$error.required" class="help-inline">
+        Required
+    </span>
   </div>
 
   <div class="control-group">
     <label>Website</label>
-    <input type="url" name="site" ng-model="detail.project.url">
+    <input type="url" name="site" ng-model="detail.project.url" required>
+    <span ng-show="myForm.site.$error.required" class="help-inline">
+        Required
+    </span>
+    <span ng-show="myForm.site.$error.url" class="help-inline">
+        Not a URL
+    </span>
   </div>
 
   <label>Description</label>
@@ -15,6 +24,7 @@
   <br>
   <a href="#/" class="btn">Cancel</a>
   <button ng-click="detail.save()"
-        class="btn btn-primary">Save</button>
+          ng-disabled="myForm.$invalid"
+          class="btn btn-primary">Save</button>
   <button ng-click="detail.delete()" class="btn btn-danger">Delete</button>
 </form>
