@@ -1,6 +1,6 @@
 'use strict';
 
-var projectsApp = angular.module('projects', ['ngResource']);
+var projectsApp = angular.module('projects', ['ngResource', 'ngRoute', 'ngAnimate']);
 
 projectsApp.config(function($routeProvider) {
   $routeProvider.
@@ -20,10 +20,7 @@ projectsApp.run(function ($rootScope) {
   $rootScope.$on('$routeChangeSuccess', function(e, current, previous) {
     var direction = current && previous && current.depth < previous.depth;
 
-    $rootScope.viewSlideAnimation = {
-      enter: direction ? 'slide-left-enter' : 'slide-right-enter',
-      leave: direction ? 'slide-right-leave' : 'slide-left-leave'
-    }
+    $rootScope.viewSlideAnimation = direction ? 'slide-left' : 'slide-right';
   });
 });
 
