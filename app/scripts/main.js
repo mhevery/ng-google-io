@@ -17,11 +17,23 @@ projectsApp.config(function($routeProvider) {
 });
 
 projectsApp.run(function ($rootScope) {
-  $rootScope.$on('$routeChangeSuccess', function(e, current, previous) {
-    var direction = current && previous && current.depth < previous.depth;
+  $rootScope.viewSlideAnimation = 'slide-left'; //always start the page from the left
 
-    $rootScope.viewSlideAnimation = direction ? 'slide-left' : 'slide-right';
+  $rootScope.$on('$routeChangeStart', function(e, current, previous) {
+    $rootScope.viewSlideAnimation = solveDirection(current, previous) || $rootScope.viewSlideAnimation;
   });
+
+  $rootScope.$on('$routeChangeSuccess', function(e, current, previous) {
+    $rootScope.viewSlideAnimation = solveDirection(current, previous, true) || $rootScope.viewSlideAnimation;
+  });
+
+  function solveDirection(current, previous, reverse) {
+    if(previous && current) {
+      return reverse ?
+        (current.depth < previous.depth ? 'slide-left' : 'slide-right') :
+        (current.depth < previous.depth ? 'slide-right' : 'slide-left');
+    }
+  };
 });
 
 projectsApp.factory('Project', function($resource) {
