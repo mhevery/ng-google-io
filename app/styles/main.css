@@ -48,8 +48,7 @@ input.ng-invalid {
 
 
 .slide.ng-enter, .slide.ng-leave {
-  -webkit-transition:all linear .3s;
-  -webkit-transition:all,cubic-bezier(0.250, 0.460, 0.450, 0.940) .3s;
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) .3s;
   position: relative;
 }
 
